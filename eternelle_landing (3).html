@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Éternelle Airlines</title>
+<style>
+  :root {
+    --nuit: #0B1B3A;
+    --encre: #15244A;
+    --cuivre: #B88746;
+    --or: #D9B583;
+    --creme: #F7F4EF;
+    --blanc: #FFFFFF;
+    --gris: #F2F2F0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--blanc); color: var(--nuit); font-family: 'Georgia', serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(255,255,255,0.97); padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(11,27,58,0.08);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; }
+  .nav-brand { color: var(--nuit); font-size: 20px; letter-spacing: 0.05em; font-weight: 400; font-style: italic; font-family: 'Georgia', serif; }
+  .nav-airlines { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cuivre); display: block; margin-top: 1px; }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a { color: rgba(11,27,58,0.5); text-decoration: none; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--cuivre); }
+  .nav-cta { background: var(--nuit); color: var(--blanc); border: none; padding: 10px 26px; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; }
+  .nav-cta:hover { background: var(--cuivre); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; background: var(--blanc);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden; padding-top: 80px;
+    border-bottom: 1px solid rgba(11,27,58,0.06);
+  }
+  .hero-eyebrow { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--cuivre); margin-bottom: 36px; }
+  .hero-lockup { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 0; }
+  .hero-lockup-text { display: flex; flex-direction: column; align-items: flex-start; }
+  .hero-title { font-size: clamp(52px, 8vw, 96px); color: var(--nuit); font-weight: 300; letter-spacing: 0.08em; line-height: 1.05; font-style: italic; }
+  .hero-airlines { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--cuivre); margin-top: 6px; display: block; }
+  .hero-sub { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(11,27,58,0.35); margin-top: 28px; }
+  .hero-tagline { font-size: 20px; color: rgba(11,27,58,0.55); margin-top: 16px; font-style: italic; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 16px; margin-top: 48px; }
+  .btn-primary { background: var(--nuit); color: var(--blanc); border: none; padding: 16px 44px; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { background: var(--cuivre); }
+  .btn-ghost { background: transparent; color: var(--nuit); border: 1px solid rgba(11,27,58,0.25); padding: 16px 44px; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .btn-ghost:hover { border-color: var(--cuivre); color: var(--cuivre); }
+  .hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, rgba(11,27,58,0.2)); }
+  .scroll-label { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.3em; color: rgba(11,27,58,0.3); text-transform: uppercase; }
+
+  /* SECTIONS */
+  section { padding: 100px 60px; }
+  .section-label { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--cuivre); margin-bottom: 20px; }
+  .section-title { font-size: clamp(32px, 4vw, 52px); font-weight: 300; color: var(--nuit); line-height: 1.15; font-style: italic; }
+  .divider { width: 60px; height: 1px; background: var(--cuivre); margin: 28px 0; }
+
+  /* POSITIONING */
+  .positioning { background: var(--blanc); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
+  .pos-text p { font-size: 17px; line-height: 1.85; color: rgba(11,27,58,0.65); font-weight: 300; font-style: normal; font-family: 'Helvetica Neue', sans-serif; }
+  .pos-text p + p { margin-top: 20px; }
+  .pos-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .stat-card { background: var(--nuit); padding: 32px 24px; }
+  .stat-num { font-size: 42px; color: var(--cuivre); font-weight: 300; letter-spacing: -0.02em; font-family: 'Georgia', serif; }
+  .stat-label { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 8px; }
+
+  /* CLASSES */
+  .classes { background: var(--creme); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .classes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+  .class-card { padding: 48px 36px; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.3s; background: var(--blanc); border: 1px solid rgba(11,27,58,0.07); }
+  .class-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(11,27,58,0.08); }
+  .class-card.featured { background: var(--nuit); border-color: var(--nuit); }
+  .class-badge { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(11,27,58,0.35); margin-bottom: 20px; }
+  .class-card.featured .class-badge { color: rgba(255,255,255,0.4); }
+  .class-name { font-size: 26px; color: var(--nuit); font-weight: 300; letter-spacing: 0.03em; margin-bottom: 12px; font-style: italic; }
+  .class-card.featured .class-name { color: var(--blanc); }
+  .class-name em { font-style: italic; color: var(--cuivre); }
+  .class-desc { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: rgba(11,27,58,0.5); line-height: 1.8; margin-top: 16px; }
+  .class-card.featured .class-desc { color: rgba(255,255,255,0.5); }
+  .class-features { margin-top: 28px; list-style: none; }
+  .class-features li { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: rgba(11,27,58,0.6); padding: 8px 0; border-bottom: 1px solid rgba(11,27,58,0.06); display: flex; align-items: center; gap: 10px; }
+  .class-card.featured .class-features li { color: rgba(255,255,255,0.65); border-bottom-color: rgba(255,255,255,0.08); }
+  .class-features li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--cuivre); flex-shrink: 0; }
+  .class-price { margin-top: 32px; }
+  .price-from { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(11,27,58,0.3); }
+  .class-card.featured .price-from { color: rgba(255,255,255,0.3); }
+  .price-val { font-size: 32px; color: var(--nuit); font-weight: 300; font-family: 'Georgia', serif; }
+  .class-card.featured .price-val { color: var(--blanc); }
+  .price-note { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: rgba(11,27,58,0.3); }
+  .class-card.featured .price-note { color: rgba(255,255,255,0.3); }
+
+  /* FLUX */
+  .flux { background: var(--blanc); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .flow-grid { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; gap: 0; align-items: start; margin-top: 48px; }
+  .flow-col-title { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: #999; margin-bottom: 14px; }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; padding-top: 46px; }
+  .fcard { background: var(--creme); border-radius: 4px; padding: 16px 18px; margin-bottom: 10px; }
+  .fcard.usa { border-left: 3px solid #378ADD; }
+  .fcard.eu { border-left: 3px solid #7F77DD; }
+  .fcard.paris { border: 2px solid var(--cuivre); background: rgba(184,135,70,0.04); }
+  .fcard.dest-main { border-left: 3px solid #1D9E75; }
+  .fcard.dest-sec { border-left: 3px solid rgba(217,181,131,0.5); }
+  .fcard-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .fcard-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .fcard-name { font-size: 14px; color: var(--nuit); font-weight: 500; font-family: 'Helvetica Neue', sans-serif; }
+  .fcard.paris .fcard-name { font-family: 'Georgia', serif; color: var(--cuivre); font-size: 15px; font-style: italic; }
+  .fcard-sub { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: #666; line-height: 1.8; }
+  .fcard-tag { display: inline-block; margin-top: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 9px; border-radius: 3px; }
+  .ftag-blue { background: rgba(55,138,221,0.1); color: #185FA5; }
+  .ftag-purple { background: rgba(127,119,221,0.1); color: #534AB7; }
+  .ftag-gold { background: rgba(184,135,70,0.12); color: var(--cuivre); }
+  .ftag-green { background: rgba(29,158,117,0.1); color: #0F6E56; }
+  .ftag-teal { background: rgba(93,202,165,0.1); color: #085041; }
+  .hub-note { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: #555; margin-top: 10px; line-height: 1.8; padding: 10px 12px; background: rgba(11,27,58,0.03); border-radius: 4px; }
+  .flow-legend { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(11,27,58,0.08); }
+  .flow-leg { display: flex; align-items: center; gap: 7px; font-family: 'Helvetica Neue', sans-serif; font-size: 9px; color: #999; letter-spacing: 0.14em; text-transform: uppercase; }
+  .flow-leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* DESTINATIONS */
+  .destinations { background: var(--creme); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .dest-grid-main { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3px; margin-top: 60px; height: 380px; }
+  .dest-grid-secondary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-top: 3px; height: 240px; }
+  .dest-grid-third { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 3px; height: 220px; }
+  .dest-card { position: relative; overflow: hidden; cursor: pointer; }
+  .dest-card:hover .dest-overlay { background: rgba(11,27,58,0.4); }
+  .dest-color { width: 100%; height: 100%; }
+  .dest-color { background-size: cover; background-position: center; }
+  .dest-color.maldives { background-image: url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&q=80'); }
+  .dest-color.seychelles { background-image: url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200&q=80'); }
+  .dest-color.paris { background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80'); }
+  .dest-color.bali { background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80'); }
+  .dest-color.maurice { background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80'); }
+  .dest-color.phuket { background-image: url('https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80'); }
+  .dest-color.zanzibar { background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80'); }
+  .dest-color.barbade { background-image: url('https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80'); }
+  .dest-color.reunion { background-image: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?w=800&q=80'); }
+  .dest-color.saintelucie { background-image: url('https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&q=80'); }
+  .dest-overlay { position: absolute; inset: 0; background: rgba(11,27,58,0.55); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; transition: background 0.3s; }
+  .dest-tag { font-family: 'Helvetica Neue', sans-serif; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--or); margin-bottom: 8px; }
+  .dest-name { font-size: 24px; color: var(--blanc); font-weight: 300; font-style: italic; }
+  .dest-info { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 6px; line-height: 1.6; }
+  .dest-duration { display: inline-block; margin-top: 10px; background: var(--cuivre); color: var(--blanc); padding: 5px 12px; font-family: 'Helvetica Neue', sans-serif; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .dest-section-label { font-family: 'Helvetica Neue', sans-serif; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(11,27,58,0.3); margin-top: 28px; margin-bottom: 8px; }
+
+  /* STRATÉGIE */
+  .strategie { background: var(--blanc); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .strat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; }
+  .strat-block { border-top: 1px solid rgba(184,135,70,0.3); padding-top: 28px; }
+  .strat-num { font-size: 11px; color: var(--cuivre); font-family: 'Helvetica Neue', sans-serif; letter-spacing: 0.2em; margin-bottom: 16px; }
+  .strat-title { font-size: 20px; color: var(--nuit); font-weight: 300; margin-bottom: 14px; line-height: 1.3; font-style: italic; }
+  .strat-text { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: rgba(11,27,58,0.55); line-height: 1.9; }
+
+  /* SERVICES */
+  .services { background: var(--creme); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .serv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 60px; }
+  .serv-card { background: var(--blanc); padding: 36px 28px; border-top: 3px solid transparent; transition: border-color 0.3s; }
+  .serv-card:hover { border-top-color: var(--cuivre); }
+  .serv-icon { font-size: 24px; margin-bottom: 20px; }
+  .serv-name { font-size: 16px; color: var(--nuit); font-weight: 400; margin-bottom: 12px; font-style: italic; }
+  .serv-desc { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: rgba(11,27,58,0.5); line-height: 1.8; }
+
+  /* B2B */
+  .b2b { background: var(--blanc); border-bottom: 1px solid rgba(11,27,58,0.06); }
+  .b2b-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 60px; align-items: center; }
+  .b2b-text p { font-family: 'Helvetica Neue', sans-serif; font-size: 14px; color: rgba(11,27,58,0.6); line-height: 1.95; }
+  .b2b-text p + p { margin-top: 18px; }
+  .b2b-items { display: flex; flex-direction: column; gap: 16px; }
+  .b2b-item { display: flex; gap: 20px; align-items: flex-start; padding: 24px; border: 1px solid rgba(11,27,58,0.08); }
+  .b2b-item:hover { border-color: var(--cuivre); }
+  .b2b-item-num { font-size: 32px; color: rgba(184,135,70,0.2); font-weight: 300; line-height: 1; flex-shrink: 0; font-family: 'Georgia', serif; }
+  .b2b-item-title { font-size: 14px; color: var(--nuit); margin-bottom: 6px; font-style: italic; }
+  .b2b-item-desc { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: rgba(11,27,58,0.45); line-height: 1.7; }
+
+  /* BENCHMARK */
+  .benchmark { background: var(--creme); }
+  .bench-table { width: 100%; border-collapse: collapse; margin-top: 50px; }
+  .bench-table th { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cuivre); padding: 16px 20px; text-align: left; border-bottom: 1px solid rgba(11,27,58,0.1); }
+  .bench-table td { padding: 18px 20px; font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: rgba(11,27,58,0.6); border-bottom: 1px solid rgba(11,27,58,0.05); vertical-align: middle; }
+  .bench-table tr.highlight { background: rgba(184,135,70,0.05); }
+  .bench-table tr.highlight td { color: var(--nuit); font-weight: 500; }
+  .badge { display: inline-block; padding: 3px 10px; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Helvetica Neue', sans-serif; border-radius: 3px; }
+  .badge-green { background: #e6f4ea; color: #2d7a3a; }
+  .badge-red { background: #fce8e6; color: #b5352a; }
+  .badge-gold { background: rgba(184,135,70,0.12); color: var(--cuivre); }
+  .badge-neutral { background: rgba(11,27,58,0.05); color: rgba(11,27,58,0.4); }
+  .stars { color: var(--cuivre); letter-spacing: 1px; font-size: 12px; }
+  .dim { color: rgba(11,27,58,0.2); font-size: 11px; }
+
+  /* FOOTER */
+  footer { background: var(--nuit); padding: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { display: flex; align-items: center; gap: 14px; }
+  .footer-brand { color: var(--blanc); font-size: 20px; letter-spacing: 0.05em; font-style: italic; font-family: 'Georgia', serif; }
+  .footer-airlines { font-family: 'Helvetica Neue', sans-serif; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cuivre); display: block; margin-top: 2px; }
+  .footer-info { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; text-align: right; line-height: 2; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="26" height="26" viewBox="0 0 42 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/>
+    </svg>
+    <div>
+      <span class="nav-brand">Éternelle</span>
+      <span class="nav-airlines">Airlines</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#positionnement">Concept</a>
+    <a href="#classes">Cabines</a>
+    <a href="#flux">Réseau</a>
+    <a href="#destinations">Destinations</a>
+    <a href="#strategie">Stratégie</a>
+    <a href="#b2b">Partenariats</a>
+    <a href="#benchmark">Marché</a>
+  </div>
+  <button class="nav-cta">Découvrir</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <p class="hero-eyebrow">Hub Roissy CDG · T2E · Luxury Honeymoon Airlines</p>
+  <div class="hero-lockup">
+    <svg width="80" height="80" viewBox="0 0 42 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/>
+    </svg>
+    <div class="hero-lockup-text">
+      <h1 class="hero-title">Éternelle</h1>
+      <span class="hero-airlines">Airlines</span>
+    </div>
+  </div>
+  <p class="hero-sub">Long-courrier de luxe · Hub Paris CDG · Spécialiste voyages de noces</p>
+  <p class="hero-tagline">« Votre lune de miel commence à bord. »</p>
+  <div class="hero-ctas">
+    <button class="btn-primary" onclick="document.getElementById('positionnement').scrollIntoView({behavior:'smooth'})">Notre vision</button>
+    <button class="btn-ghost" onclick="document.getElementById('classes').scrollIntoView({behavior:'smooth'})">Les cabines</button>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Découvrir</span>
+  </div>
+</section>
+
+<!-- POSITIONNEMENT -->
+<section class="positioning" id="positionnement">
+  <p class="section-label">01 · Concept & positionnement</p>
+  <h2 class="section-title">Une compagnie née pour<br>l'instant le plus précieux</h2>
+  <div class="divider"></div>
+  <div class="pos-grid">
+    <div class="pos-text">
+      <p>Éternelle est la première compagnie aérienne au monde entièrement dédiée aux voyages de noces. Basée à l'aéroport Roissy CDG Terminal 2, elle opère en long-courrier haut de gamme vers les destinations paradisiaques de l'Océan Indien.</p>
+      <p>Notre modèle repose sur une conviction simple : les couples qui vivent leur lune de miel méritent bien plus qu'un vol traditionnel. Éternelle propose une expérience complète, du départ de leur domicile jusqu'à la porte de leur resort — à prix équivalent Air France, mais avec un niveau de service incomparable.</p>
+      <p>En ciblant les Européens et Américains aisés souhaitant faire escale à Paris, Éternelle se positionne comme la porte d'entrée vers le romanesque français avant l'envol vers les tropiques.</p>
+    </div>
+    <div class="pos-stats">
+      <div class="stat-card">
+        <div class="stat-num">1 Md€</div>
+        <div class="stat-label">Investissement initial validé</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">A330neo</div>
+        <div class="stat-label">Flotte — appareil de référence</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Classes de voyage</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">CDG</div>
+        <div class="stat-label">Hub principal · T2E</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CABINES -->
+<section class="classes" id="classes">
+  <p class="section-label">02 · Les cabines</p>
+  <h2 class="section-title">Trois façons de vivre l'exception</h2>
+  <div class="divider"></div>
+  <div class="classes-grid">
+    <div class="class-card featured">
+      <p class="class-badge">Classe signature</p>
+      <h3 class="class-name"><em>Duo Honeymoon</em></h3>
+      <p class="class-desc">Suite privative double lit. La cabine la plus intime jamais conçue pour un couple en voyage de noces.</p>
+      <ul class="class-features">
+        <li>Suite privative double lit queen-size</li>
+        <li>Champagne Billecart-Salmon à l'embarquement</li>
+        <li>Menu gastronomique personnalisé</li>
+        <li>Peignoirs & service de spa en vol</li>
+        <li>Coordinateur de voyage dédié</li>
+        <li>Accueil salon CDG privé Éternelle</li>
+      </ul>
+      <div class="class-price">
+        <p class="price-from">À partir de</p>
+        <p class="price-val">4 800 €</p>
+        <p class="price-note">par couple · aller-retour</p>
+      </div>
+    </div>
+    <div class="class-card">
+      <p class="class-badge">Classe affaires</p>
+      <h3 class="class-name">Premium</h3>
+      <p class="class-desc">Siège-lit, confort premium et services personnalisés pour un voyage au-dessus des nuages.</p>
+      <ul class="class-features">
+        <li>Siège entièrement inclinable (180°)</li>
+        <li>Sélection vins & champagnes</li>
+        <li>Amenity kit prestige</li>
+        <li>Accès salon partenaire CDG</li>
+        <li>Priorité embarquement</li>
+      </ul>
+      <div class="class-price">
+        <p class="price-from">À partir de</p>
+        <p class="price-val">2 400 €</p>
+        <p class="price-note">par passager · aller-retour</p>
+      </div>
+    </div>
+    <div class="class-card">
+      <p class="class-badge">Classe économique</p>
+      <h3 class="class-name">Standard</h3>
+      <p class="class-desc">Plus d'espace, plus de confort. Notre cabine économique surpasse les standards du marché.</p>
+      <ul class="class-features">
+        <li>Configuration 2-3-2 (pas de siège milieu)</li>
+        <li>Repas inclus, carte vins</li>
+        <li>Couverture & oreiller premium</li>
+        <li>Divertissement 13.3" HD</li>
+        <li>Bagages 30kg inclus</li>
+      </ul>
+      <div class="class-price">
+        <p class="price-from">À partir de</p>
+        <p class="price-val">890 €</p>
+        <p class="price-note">par passager · aller-retour</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLUX PASSAGERS -->
+<section class="flux" id="flux">
+  <p class="section-label">03 · Flux de passagers</p>
+  <h2 class="section-title">D'où viennent nos clients,<br>où les emmenons-nous</h2>
+  <div class="divider"></div>
+  <div class="flow-grid">
+    <div>
+      <p class="flow-col-title">Provenances</p>
+      <div class="fcard usa">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#378ADD;"></span><span class="fcard-name">États-Unis</span></div>
+        <p class="fcard-sub">New York · JFK<br>Miami · MIA<br>Boston · BOS<br>Los Angeles · LAX<br>Chicago · ORD</p>
+        <span class="fcard-tag ftag-blue">Cible premium</span>
+      </div>
+      <div class="fcard eu">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#7F77DD;"></span><span class="fcard-name">Europe</span></div>
+        <p class="fcard-sub">London · LHR<br>Amsterdam · AMS<br>Frankfurt · FRA<br>Madrid · MAD<br>Munich · MUC</p>
+        <span class="fcard-tag ftag-purple">Via codeshares</span>
+      </div>
+    </div>
+    <div class="flow-arrow">
+      <svg width="40" height="24" viewBox="0 0 40 24" fill="none"><path d="M2 12 L30 12" stroke="#B88746" stroke-width="1.5" stroke-dasharray="4,3"/><path d="M26 6 L34 12 L26 18" stroke="#B88746" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <p class="flow-col-title">Escale & Hub</p>
+      <div class="fcard paris">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#B88746;"></span><span class="fcard-name">Paris</span></div>
+        <p class="fcard-sub" style="color:var(--nuit);font-size:12px;">Roissy CDG · Terminal 2E</p>
+        <div class="hub-note">Salon privé Éternelle<br>Champagne & spa pré-vol<br>Hôtels partenaires (2 nuits)<br>Le Meurice · Le Bristol · Crillon<br><span style="color:var(--cuivre);">City break honeymoon packagé</span></div>
+        <span class="fcard-tag ftag-gold">Hub principal</span>
+      </div>
+    </div>
+    <div class="flow-arrow">
+      <svg width="40" height="24" viewBox="0 0 40 24" fill="none"><path d="M2 12 L30 12" stroke="#1D9E75" stroke-width="1.5" stroke-dasharray="4,3"/><path d="M26 6 L34 12 L26 18" stroke="#1D9E75" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <p class="flow-col-title">Destinations</p>
+      <div class="fcard dest-main">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#1D9E75;"></span><span class="fcard-name">Maldives</span></div>
+        <p class="fcard-sub">Male · MLE · 11h de vol<br>A330neo · Overwater bungalows</p>
+        <span class="fcard-tag ftag-green">Destination phare</span>
+      </div>
+      <div class="fcard dest-main">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#5DCAA5;"></span><span class="fcard-name">Seychelles</span></div>
+        <p class="fcard-sub">Mahé · SEZ · 9h30 de vol<br>A330neo · Resorts exclusifs</p>
+        <span class="fcard-tag ftag-teal">Destination prestige</span>
+      </div>
+      <div class="fcard dest-sec">
+        <div class="fcard-head"><span class="fcard-dot" style="background:#D9B583;opacity:0.6;"></span><span class="fcard-name" style="font-size:13px;color:#888;">Maurice</span></div>
+        <p class="fcard-sub">Mauritius · MRU<br>Connexion régionale OI</p>
+        <span class="fcard-tag" style="background:rgba(217,181,131,0.08);color:#aaa;">Secondaire</span>
+      </div>
+    </div>
+  </div>
+  <div class="flow-legend">
+    <div class="flow-leg"><span class="flow-leg-dot" style="background:#378ADD;"></span>Provenances USA</div>
+    <div class="flow-leg"><span class="flow-leg-dot" style="background:#7F77DD;"></span>Provenances Europe</div>
+    <div class="flow-leg"><span class="flow-leg-dot" style="background:#B88746;"></span>Hub Paris CDG</div>
+    <div class="flow-leg"><span class="flow-leg-dot" style="background:#1D9E75;"></span>Destinations Océan Indien</div>
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="destinations" id="destinations">
+  <p class="section-label">04 · Destinations</p>
+  <h2 class="section-title">9 destinations, un seul fil conducteur</h2>
+  <div class="divider"></div>
+
+  <p class="dest-section-label">Destinations phares · Océan Indien</p>
+  <div class="dest-grid-main">
+    <div class="dest-card">
+      <div class="dest-color maldives"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Destination phare · 11h CDG</p>
+        <h3 class="dest-name">Maldives</h3>
+        <p class="dest-info">Male · MLE · Overwater bungalows</p>
+        <span class="dest-duration">5x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color seychelles"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Destination prestige · 9h30</p>
+        <h3 class="dest-name">Seychelles</h3>
+        <p class="dest-info">Mahé · SEZ · Resorts exclusifs</p>
+        <span class="dest-duration">4x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color paris"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Escale romantique · Hub</p>
+        <h3 class="dest-name">Paris</h3>
+        <p class="dest-info">CDG · T2E · City break packagé</p>
+        <span class="dest-duration">Hub CDG</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="dest-section-label">Destinations Asie & Océan Indien</p>
+  <div class="dest-grid-secondary">
+    <div class="dest-card">
+      <div class="dest-color bali"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Asie · 14h CDG</p>
+        <h3 class="dest-name">Bali</h3>
+        <p class="dest-info">DPS · N°1 mondial millennials</p>
+        <span class="dest-duration">4x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color maurice"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Océan Indien · 11h CDG</p>
+        <h3 class="dest-name">Maurice</h3>
+        <p class="dest-info">MRU · Resorts all-inclusive</p>
+        <span class="dest-duration">4x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color phuket"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Thaïlande · 11h CDG</p>
+        <h3 class="dest-name">Phuket</h3>
+        <p class="dest-info">HKT · Plages & resorts luxe</p>
+        <span class="dest-duration">4x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color zanzibar"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Afrique · 9h CDG</p>
+        <h3 class="dest-name">Zanzibar</h3>
+        <p class="dest-info">ZNZ · Plages préservées</p>
+        <span class="dest-duration">4x/semaine</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="dest-section-label">Destinations Caraïbes & Autres</p>
+  <div class="dest-grid-third">
+    <div class="dest-card">
+      <div class="dest-color barbade"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Caraïbes · 8h30 CDG</p>
+        <h3 class="dest-name">Barbade</h3>
+        <p class="dest-info">BGI · Cible britannique premium</p>
+        <span class="dest-duration">3x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color reunion"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Océan Indien · 11h CDG</p>
+        <h3 class="dest-name">La Réunion</h3>
+        <p class="dest-info">RUN · Marché français fort</p>
+        <span class="dest-duration">3x/semaine</span>
+      </div>
+    </div>
+    <div class="dest-card">
+      <div class="dest-color saintelucie"></div>
+      <div class="dest-overlay">
+        <p class="dest-tag">Caraïbes · 8h30 CDG</p>
+        <h3 class="dest-name">Sainte-Lucie</h3>
+        <p class="dest-info">UVF · Honeymoon haut de gamme</p>
+        <span class="dest-duration">3x/semaine</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:20px 24px;background:rgba(184,135,70,0.05);border:1px solid rgba(184,135,70,0.2);display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;gap:48px;">
+      <div><p style="font-family:'Georgia',serif;font-size:32px;color:var(--cuivre);font-weight:300;">8</p><p style="font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.4);margin-top:4px;">A330neo</p></div>
+      <div><p style="font-family:'Georgia',serif;font-size:32px;color:var(--cuivre);font-weight:300;">37</p><p style="font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.4);margin-top:4px;">Rotations/semaine</p></div>
+      <div><p style="font-family:'Georgia',serif;font-size:32px;color:var(--cuivre);font-weight:300;">430K</p><p style="font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.4);margin-top:4px;">Passagers/an</p></div>
+      <div><p style="font-family:'Georgia',serif;font-size:32px;color:var(--cuivre);font-weight:300;">9</p><p style="font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.4);margin-top:4px;">Destinations</p></div>
+    </div>
+    <p style="font-family:'Georgia',serif;font-size:14px;color:rgba(11,27,58,0.4);font-style:italic;max-width:280px;line-height:1.6;">« Toutes les destinations les plus désirées des amoureux, au départ de Paris. »</p>
+  </div>
+</section>
+
+<!-- STRATÉGIE -->
+<section class="strategie" id="strategie">
+  <p class="section-label">05 · Stratégie commerciale</p>
+  <h2 class="section-title">Un modèle conçu pour durer</h2>
+  <div class="divider"></div>
+  <div class="strat-grid">
+    <div class="strat-block">
+      <p class="strat-num">01</p>
+      <h3 class="strat-title">Prix miroir Air France,<br>service supérieur</h3>
+      <p class="strat-text">Éternelle aligne ses tarifs sur Air France pour éliminer la barrière prix. La différenciation se fait exclusivement par la qualité de service, le sur-mesure et l'expérience émotionnelle.</p>
+    </div>
+    <div class="strat-block">
+      <p class="strat-num">02</p>
+      <h3 class="strat-title">Escale Paris comme<br>levier d'acquisition</h3>
+      <p class="strat-text">Les clients américains et britanniques sont routés vers CDG via codeshare. Paris devient hub opérationnel et expérience vendue : hôtels partenaires, city break, commissions.</p>
+    </div>
+    <div class="strat-block">
+      <p class="strat-num">03</p>
+      <h3 class="strat-title">Packages all-inclusive<br>B2B & B2C</h3>
+      <p class="strat-text">Distribution via agences honeymoon (B2B) et en direct (B2C). Les packages vol + hôtel génèrent des marges sur commission. Les vols lune de miel constituent le cœur de la rentabilité.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <p class="section-label">06 · Services signature</p>
+  <h2 class="section-title">De votre porte à l'hôtel</h2>
+  <div class="divider"></div>
+  <div class="serv-grid">
+    <div class="serv-card">
+      <div class="serv-icon">🚘</div>
+      <h4 class="serv-name">Transfert domicile–CDG</h4>
+      <p class="serv-desc">Récupération à domicile en véhicule de prestige. Pas de taxi, pas de stress le jour J.</p>
+    </div>
+    <div class="serv-card">
+      <div class="serv-icon">🥂</div>
+      <h4 class="serv-name">Salon privé Éternelle</h4>
+      <p class="serv-desc">Accueil en salon exclusif T2E avec champagne et spa avant l'embarquement.</p>
+    </div>
+    <div class="serv-card">
+      <div class="serv-icon">✈️</div>
+      <h4 class="serv-name">Expérience à bord</h4>
+      <p class="serv-desc">Gastronomie, vins fins, suite double, kits bien-être. Le vol fait partie du voyage.</p>
+    </div>
+    <div class="serv-card">
+      <div class="serv-icon">🏝️</div>
+      <h4 class="serv-name">Arrivée resort</h4>
+      <p class="serv-desc">Transfert aéroport–hôtel inclus. Le couple est accompagné sans rupture de service.</p>
+    </div>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="b2b" id="b2b">
+  <p class="section-label">07 · Modèle B2B & partenariats</p>
+  <h2 class="section-title">Un écosystème de valeur partagée</h2>
+  <div class="divider"></div>
+  <div class="b2b-grid">
+    <div class="b2b-text">
+      <p>Éternelle construit un réseau de partenaires qui génère des revenus à chaque étape du parcours client — bien au-delà du seul billet d'avion.</p>
+      <p>Les codeshares avec les compagnies nationales européennes assurent un flux continu de passagers vers CDG, tout en offrant une connectivité sans coût d'exploitation de lignes secondaires.</p>
+      <p>Les hôtels partenaires aux Maldives et Seychelles reversent une commission sur chaque nuitée vendue via Éternelle.</p>
+    </div>
+    <div class="b2b-items">
+      <div class="b2b-item">
+        <span class="b2b-item-num">01</span>
+        <div>
+          <p class="b2b-item-title">Codeshare européen</p>
+          <p class="b2b-item-desc">BA, Iberia, Lufthansa, KLM, Air France — partage de revenus et de passagers vers CDG.</p>
+        </div>
+      </div>
+      <div class="b2b-item">
+        <span class="b2b-item-num">02</span>
+        <div>
+          <p class="b2b-item-title">Hôtels partenaires resort</p>
+          <p class="b2b-item-desc">Four Seasons, Anantara, Six Senses, One&Only — commissions + offres packagées exclusives.</p>
+        </div>
+      </div>
+      <div class="b2b-item">
+        <span class="b2b-item-num">03</span>
+        <div>
+          <p class="b2b-item-title">Escale Paris — hôtels</p>
+          <p class="b2b-item-desc">Le Meurice, Le Bristol, Crillon — packages city break honeymoon avec commission négociée.</p>
+        </div>
+      </div>
+      <div class="b2b-item">
+        <span class="b2b-item-num">04</span>
+        <div>
+          <p class="b2b-item-title">Agences honeymoon</p>
+          <p class="b2b-item-desc">Réseau d'agences spécialisées en Europe et USA — distribution B2B avec tarifs préférentiels.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENCHMARK -->
+<section class="benchmark" id="benchmark">
+  <p class="section-label">08 · Analyse concurrentielle</p>
+  <h2 class="section-title">Notre place dans l'écosystème</h2>
+  <div class="divider"></div>
+  <table class="bench-table">
+    <thead>
+      <tr>
+        <th>Compagnie</th>
+        <th>Positionnement</th>
+        <th>Spé. honeymoon</th>
+        <th>Hub Europe</th>
+        <th>Prix relatif</th>
+        <th>Niveau service</th>
+        <th>Axe clé</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td><strong>● Éternelle</strong></td>
+        <td>Luxury honeymoon</td>
+        <td><span class="badge badge-gold">100% dédié</span></td>
+        <td>CDG T2E</td>
+        <td>≈ Air France</td>
+        <td><span class="stars">★★★★★</span></td>
+        <td>Prix miroir + service total</td>
+      </tr>
+      <tr>
+        <td>Air France</td>
+        <td>Généraliste premium</td>
+        <td><span class="badge badge-red">Aucune</span></td>
+        <td>CDG T2</td>
+        <td>Référence</td>
+        <td><span class="stars">★★★</span><span class="dim">★★</span></td>
+        <td>Réseau mondial, fidélité</td>
+      </tr>
+      <tr>
+        <td>Emirates</td>
+        <td>Luxury généraliste</td>
+        <td><span class="badge badge-neutral">Marginale</span></td>
+        <td>Dubai DXB</td>
+        <td>+15 à +25%</td>
+        <td><span class="stars">★★★★</span><span class="dim">★</span></td>
+        <td>A380, First Class bar</td>
+      </tr>
+      <tr>
+        <td>Singapore Airlines</td>
+        <td>Luxury premium</td>
+        <td><span class="badge badge-neutral">Marginale</span></td>
+        <td>Singapore SIN</td>
+        <td>+20 à +30%</td>
+        <td><span class="stars">★★★★★</span></td>
+        <td>Suite privée, service asiatique</td>
+      </tr>
+      <tr>
+        <td>Air Mauritius</td>
+        <td>Régional Océan Indien</td>
+        <td><span class="badge badge-neutral">Partielle</span></td>
+        <td>Mauritius MRU</td>
+        <td>Moyen</td>
+        <td><span class="stars">★★★</span><span class="dim">★★</span></td>
+        <td>Connexions OI, réseau régional</td>
+      </tr>
+      <tr>
+        <td>British Airways</td>
+        <td>Généraliste premium</td>
+        <td><span class="badge badge-red">Aucune</span></td>
+        <td>London LHR</td>
+        <td>Référence</td>
+        <td><span class="stars">★★★</span><span class="dim">★★</span></td>
+        <td>Réseau mondial, Club World</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="28" height="28" viewBox="0 0 42 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/>
+    </svg>
+    <div>
+      <span class="footer-brand">Éternelle</span>
+      <span class="footer-airlines">Airlines</span>
+    </div>
+  </div>
+  <div class="footer-info">
+    Luxury Honeymoon Airlines · Hub Roissy CDG T2E<br>
+    Master TLTE — Airlines Business Management · 2026<br>
+    Guillaume · Roman · Jamy
+  </div>
+</footer>
+
+
+<script>
+// Détection mobile - si mobile on affiche le configurateur
+if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+  document.body.innerHTML = `
+  <style>
+    :root{--nuit:#0B1B3A;--cuivre:#B88746;--or:#D9B583;--creme:#F7F4EF;--blanc:#FFFFFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+    body{background:var(--blanc);color:var(--nuit);font-family:'Georgia',serif;overflow-x:hidden;min-height:100vh;}
+    .screen{display:none;min-height:100vh;flex-direction:column;}
+    .screen.active{display:flex;}
+    .mobile-nav{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(11,27,58,0.07);background:var(--blanc);position:sticky;top:0;z-index:10;}
+    .nav-brand{font-family:'Georgia',serif;font-size:18px;color:var(--nuit);font-style:italic;}
+    .nav-airlines{font-family:'Helvetica Neue',sans-serif;font-size:7px;letter-spacing:0.3em;text-transform:uppercase;color:var(--cuivre);display:block;margin-top:1px;}
+    .section-label{font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:var(--cuivre);margin-bottom:16px;}
+    .section-title{font-size:32px;font-weight:300;color:var(--nuit);font-style:italic;line-height:1.2;margin-bottom:8px;}
+    .section-sub{font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.3);margin-bottom:28px;}
+    .divider{width:40px;height:1px;background:var(--cuivre);margin-bottom:32px;}
+    .btn-primary{background:var(--nuit);color:var(--blanc);border:none;padding:16px;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;width:100%;}
+    .btn-ghost{background:transparent;color:var(--nuit);border:1px solid rgba(11,27,58,0.2);padding:14px;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;width:100%;}
+    .btn-back{background:transparent;color:rgba(11,27,58,0.4);border:none;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;padding:0;}
+    #s1{background:var(--blanc);}
+    .s1-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 28px;border-bottom:1px solid rgba(11,27,58,0.06);}
+    .s1-eyebrow{font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--cuivre);margin-bottom:36px;}
+    .s1-lockup{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:0;}
+    .s1-name{font-size:48px;color:var(--nuit);font-weight:300;font-style:italic;letter-spacing:0.04em;line-height:1;}
+    .s1-airlines{font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.4em;text-transform:uppercase;color:var(--cuivre);display:block;margin-top:5px;text-align:left;}
+    .s1-divider{width:40px;height:1px;background:var(--cuivre);margin:28px auto;}
+    .s1-tagline{font-size:18px;color:rgba(11,27,58,0.5);font-style:italic;margin-bottom:48px;line-height:1.5;}
+    .s1-cta{background:var(--nuit);color:var(--blanc);border:none;padding:18px;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;width:100%;max-width:300px;}
+    .s1-scroll{margin-top:20px;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(11,27,58,0.25);}
+    #s2{background:var(--blanc);}
+    .s2-content{padding:36px 24px;}
+    .dest-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+    .dest-btn{position:relative;height:130px;overflow:hidden;cursor:pointer;border:none;padding:0;}
+    .dest-btn img{width:100%;height:100%;object-fit:cover;}
+    .dest-btn-overlay{position:absolute;inset:0;background:rgba(11,27,58,0.5);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;}
+    .dest-btn-name{font-family:'Georgia',serif;font-size:17px;color:#fff;font-style:italic;font-weight:300;}
+    .dest-btn-duration{font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.15em;color:var(--or);text-transform:uppercase;margin-top:3px;}
+    .dest-btn.featured{grid-column:1/-1;height:170px;}
+    #s3{background:var(--blanc);}
+    .s3-hero{height:50vh;position:relative;overflow:hidden;}
+    .s3-hero img{width:100%;height:100%;object-fit:cover;}
+    .s3-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,27,58,0.15),rgba(11,27,58,0.65));display:flex;flex-direction:column;justify-content:flex-end;padding:24px;}
+    .s3-dest-tag{font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:8px;}
+    .s3-dest-name{font-size:40px;color:#fff;font-weight:300;font-style:italic;line-height:1;}
+    .s3-dest-sub{font-family:'Helvetica Neue',sans-serif;font-size:10px;color:rgba(255,255,255,0.6);margin-top:6px;}
+    .s3-content{padding:28px 24px;}
+    .s3-back-bar{padding:16px 24px;border-bottom:1px solid rgba(11,27,58,0.07);}
+    .s3-flight{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:24px;}
+    .s3-flight-item{background:var(--nuit);padding:16px 10px;text-align:center;}
+    .s3-flight-val{font-family:'Georgia',serif;font-size:20px;color:var(--cuivre);font-weight:300;}
+    .s3-flight-key{font-family:'Helvetica Neue',sans-serif;font-size:7px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:5px;}
+    .s3-section-label{font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(11,27,58,0.3);margin-bottom:12px;}
+    .s3-classes{display:flex;flex-direction:column;gap:2px;margin-bottom:24px;}
+    .s3-class{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(11,27,58,0.07);}
+    .s3-class.duo{background:var(--nuit);border-color:var(--nuit);}
+    .s3-class-name{font-family:'Georgia',serif;font-size:16px;font-style:italic;color:var(--nuit);}
+    .s3-class.duo .s3-class-name{color:#fff;}
+    .s3-class-price{font-family:'Helvetica Neue',sans-serif;font-size:11px;color:var(--cuivre);}
+    .s3-btns{display:flex;flex-direction:column;gap:8px;}
+    #s4{background:var(--blanc);align-items:center;justify-content:center;text-align:center;padding:60px 28px;}
+    .s4-icon{font-size:40px;margin-bottom:28px;}
+    .s4-title{font-size:32px;color:var(--nuit);font-style:italic;font-weight:300;margin-bottom:16px;line-height:1.3;}
+    .s4-divider{width:40px;height:1px;background:var(--cuivre);margin:0 auto 24px;}
+    .s4-sub{font-family:'Helvetica Neue',sans-serif;font-size:11px;color:rgba(11,27,58,0.4);letter-spacing:0.1em;line-height:2;margin-bottom:40px;}
+    .s4-back{background:transparent;color:var(--nuit);border:1px solid rgba(11,27,58,0.2);padding:16px 40px;font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;}
+  </style>
+
+  <div class="screen active" id="s1">
+    <div class="s1-hero">
+      <p class="s1-eyebrow">Hub Paris CDG · T2E · Long-courrier de luxe</p>
+      <div class="s1-lockup">
+        <svg width="48" height="48" viewBox="0 0 42 56" fill="none"><path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/></svg>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;">
+          <span class="s1-name">Éternelle</span>
+          <span class="s1-airlines">Airlines</span>
+        </div>
+      </div>
+      <div class="s1-divider"></div>
+      <p class="s1-tagline">« Votre lune de miel<br>commence à bord. »</p>
+      <button class="s1-cta" onclick="mShow('s2')">Choisir ma destination</button>
+      <p class="s1-scroll">9 destinations · A330neo</p>
+    </div>
+  </div>
+
+  <div class="screen" id="s2">
+    <div class="mobile-nav">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="18" height="18" viewBox="0 0 42 56" fill="none"><path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/></svg>
+        <div><span class="nav-brand">Éternelle</span><span class="nav-airlines">Airlines</span></div>
+      </div>
+      <button class="btn-back" onclick="mShow('s1')">← Accueil</button>
+    </div>
+    <div class="s2-content">
+      <p class="section-label">Destinations</p>
+      <h2 class="section-title">Quelle est votre<br>destination de rêve ?</h2>
+      <p class="section-sub">9 destinations · Au départ de Paris CDG</p>
+      <div class="divider"></div>
+      <div class="dest-grid">
+        <button class="dest-btn featured" onclick="mShowDest('maldives')"><img src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80" alt="Maldives"/><div class="dest-btn-overlay"><p class="dest-btn-name">Maldives</p><p class="dest-btn-duration">11h · CDG · Destination phare</p></div></button>
+        <button class="dest-btn" onclick="mShowDest('seychelles')"><img src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=600&q=80" alt="Seychelles"/><div class="dest-btn-overlay"><p class="dest-btn-name">Seychelles</p><p class="dest-btn-duration">9h30 · CDG</p></div></button>
+        <button class="dest-btn" onclick="mShowDest('bali')"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali"/><div class="dest-btn-overlay"><p class="dest-btn-name">Bali</p><p class="dest-btn-duration">14h · CDG</p></div></button>
+        <button class="dest-btn" onclick="mShowDest('maurice')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Maurice"/><div class="dest-btn-overlay"><p class="dest-btn-name">Maurice</p><p class="dest-btn-duration">11h · CDG</p></div></button>
+        <button class="dest-btn" onclick="mShowDest('phuket')"><img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=600&q=80" alt="Phuket"/><div class="dest-btn-overlay"><p class="dest-btn-name">Phuket</p><p class="dest-btn-duration">11h · CDG</p></div></button>
+        <button class="dest-btn" onclick="mShowDest('zanzibar')"><img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" alt="Zanzibar"/><div class="dest-btn-overlay"><p class="dest-btn-name">Zanzibar</p><p class="dest-btn-duration">9h · CDG</p></div></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="s3">
+    <div class="s3-back-bar"><button class="btn-back" onclick="mShow('s2')">← Toutes les destinations</button></div>
+    <div class="s3-hero"><img id="ms3-img" src="" alt=""/><div class="s3-hero-overlay"><p class="s3-dest-tag" id="ms3-tag"></p><h2 class="s3-dest-name" id="ms3-name"></h2><p class="s3-dest-sub" id="ms3-sub"></p></div></div>
+    <div class="s3-content">
+      <div class="s3-flight">
+        <div class="s3-flight-item"><p class="s3-flight-val" id="ms3-dur"></p><p class="s3-flight-key">Durée de vol</p></div>
+        <div class="s3-flight-item"><p class="s3-flight-val">A330neo</p><p class="s3-flight-key">Appareil</p></div>
+        <div class="s3-flight-item"><p class="s3-flight-val" id="ms3-freq"></p><p class="s3-flight-key">Par semaine</p></div>
+      </div>
+      <p class="s3-section-label">Choisissez votre cabine</p>
+      <div class="s3-classes">
+        <div class="s3-class duo"><span class="s3-class-name">Duo Honeymoon</span><span class="s3-class-price">dès 4 800 € / couple</span></div>
+        <div class="s3-class"><span class="s3-class-name">Premium</span><span class="s3-class-price">dès 2 400 € / pax</span></div>
+        <div class="s3-class"><span class="s3-class-name">Standard</span><span class="s3-class-price">dès 890 € / pax</span></div>
+      </div>
+      <div class="s3-btns">
+        <button class="btn-primary" onclick="mShow('s4')">Réserver ce vol</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="s4">
+    <div class="mobile-nav">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="18" height="18" viewBox="0 0 42 56" fill="none"><path d="M4 28 C4 28 18 4 34 10 C26 16 23 22 23 28 C23 34 26 40 34 46 C18 52 4 28 4 28Z" fill="#B88746"/></svg>
+        <div><span class="nav-brand">Éternelle</span><span class="nav-airlines">Airlines</span></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-align:center;">
+      <div class="s4-icon">✈️</div>
+      <h2 class="s4-title">Votre voyage<br>est en cours<br>de préparation.</h2>
+      <div class="s4-divider"></div>
+      <p class="s4-sub">Un conseiller Éternelle<br>vous contactera sous 24h<br>pour finaliser votre voyage de noces.</p>
+      <button class="s4-back" onclick="mShow('s1')">Retour à l'accueil</button>
+    </div>
+  </div>
+
+  <script>
+    function mShow(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+    const mDests={maldives:{img:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80',tag:'Destination phare · Océan Indien',name:'Maldives',sub:'Male · MLE · Overwater bungalows & lagons privés',dur:'11h',freq:'5x'},seychelles:{img:'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&q=80',tag:'Destination prestige · Océan Indien',name:'Seychelles',sub:'Mahé · SEZ · Resorts exclusifs & plages préservées',dur:'9h30',freq:'4x'},bali:{img:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80',tag:'Asie · Indonésie',name:'Bali',sub:'Denpasar · DPS · N°1 mondial honeymoon millennials',dur:'14h',freq:'4x'},  maurice:{img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',tag:'Océan Indien · Île Maurice',name:'Maurice',sub:'Mauritius · MRU · Resorts all-inclusive premium',dur:'11h',freq:'4x'},phuket:{img:'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80',tag:'Asie · Thaïlande',name:'Phuket',sub:'Phuket · HKT · Plages & resorts de luxe',dur:'11h',freq:'4x'},zanzibar:{img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80',tag:'Afrique · Tanzanie',name:'Zanzibar',sub:'Zanzibar · ZNZ · Plages préservées & culture swahili',dur:'9h',freq:'4x'}};
+    function mShowDest(k){const d=mDests[k];document.getElementById('ms3-img').src=d.img;document.getElementById('ms3-tag').textContent=d.tag;document.getElementById('ms3-name').textContent=d.name;document.getElementById('ms3-sub').textContent=d.sub;document.getElementById('ms3-dur').textContent=d.dur;document.getElementById('ms3-freq').textContent=d.freq;mShow('s3');}
+  <\/script>`;
+}
+</script>
+</body>
+</html>
